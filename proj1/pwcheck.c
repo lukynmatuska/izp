@@ -5,8 +5,8 @@
 typedef struct Stats {
 	int nchars;
 	int min;
-	int avg;
-} stat_t;
+	double avg;
+} stats_t;
 
 int is_small_letter(int letter) {
 	const int a = 'a';
@@ -32,13 +32,20 @@ int is_special_char(int letter) {
 	return start <= letter && letter <= end;
 }
 
+void print_stats(stats_t stats) {
+	printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %.1f\n", stats.nchars, stats.min, stats.avg);
+}
+
 int main(int argc, char *argv[]) {
+	/**
+	 * Debug args
+	 * /
 	printf("argc:%d\n", argc);
 //	printf("argv:%s\n", *argv);
 //	fprintf(stderr,"argv:%s\n", *argv);
 	for(int i = 0; i < argc; i++) {
 		printf("argv[%d]: %s\n", i, argv[i]);
-	}
+	}*/
 	
 	/**
 	 * Check count of arguments
@@ -74,16 +81,19 @@ int main(int argc, char *argv[]) {
 	}
 
 	/**
-	 * Define STATS from arguments
+	 * Define STATS
 	 */
 	const int STATS_ARGUMENT_POSITION = 4;
+	stats_t stats;
+	stats.nchars = 0;
+	stats.min = 0;
+	stats.avg = 0;
 	bool show_stats = false;
 	if (argc >= STATS_ARGUMENT_POSITION) {
 //		if (argv[STATS_ARGUMENT_POSITION] == "--stats") {
 		show_stats = true;
 //		}
 	}
-	printf("show_stats: %d\n", show_stats);
 //	printf("%d\n", is_small_letter('b'));
 //	printf("%d\n", is_small_letter('B'));
 //	printf("%d\n", is_big_letter('b'));
@@ -92,5 +102,40 @@ int main(int argc, char *argv[]) {
 //	printf("%d\n", is_number('8'));
 //	printf("%d\n", is_special_char('!'));
 //	printf("%d\n", is_special_char('s'));
+
+	/**
+	 * MAAAAIN
+	 */
+	const int MAX_LEN_OF_PASSWORD = 100;
+	const int ASCII_NEW_LINE = '\n';
+	const char END_OF_STRING = '\0';
+	char current_password[MAX_LEN_OF_PASSWORD];
+	int position_to_write = 0;
+	int character = getchar();
+
+	// Catching all characters
+	while (character != EOF) {
+	
+		// Catching one password
+		current_password[position_to_write] = character;
+		position_to_write++;
+		character = getchar();
+		if (character != ASCII_NEW_LINE) {
+			continue;
+		}
+		current_password[position_to_write] = END_OF_STRING;
+		position_to_write = 0;
+		character = getchar();
+		// End of catching password
+		
+		printf("%s\n", current_password);
+	}
+
+	/*
+	 * Print stats at the end
+	 */
+	if (show_stats) {
+		print_stats(stats);
+	}
 	return 0;
 }
