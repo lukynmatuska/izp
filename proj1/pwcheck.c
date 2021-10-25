@@ -128,7 +128,16 @@ int main(int argc, char *argv[]) {
 		character = getchar();
 		// End of catching password
 		
-		printf("%s\n", current_password);
+//		printf("%s\n", current_password);
+
+		if (LEVEL == 1) {
+			for (int i = 0; current_password[i] != END_OF_STRING; i++) {
+				if (is_small_letter(current_password[i]) || is_big_letter(current_password[i])) {
+					printf("%s\n", current_password);
+					break;
+				}
+			}
+		}
 	}
 
 	/*
